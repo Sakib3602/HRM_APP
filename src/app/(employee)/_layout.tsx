@@ -7,7 +7,7 @@ export default function EmployeeLayout() {
 
   if (isLoading) return null;
   if (!user) return <Redirect href="/(auth)/login" />;
-  if (user.role !== "employee") return <Redirect href="/(hr)/dashboard" />;
+  if (user.role !== "employee") return <Redirect href="/(hr)/(tabs)/dashboard" />;
 
   return <Stack screenOptions={{ headerShown: false }} />;
 }

@@ -2,7 +2,6 @@ import { useAuth } from "@/context/AuthContext";
 import { Redirect, Stack } from "expo-router";
 
 
-
 export default function HrLayout() {
   const { user, isLoading } = useAuth();
 
