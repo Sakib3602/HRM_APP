@@ -7,7 +7,7 @@ export default function HrTabsLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: "#4F46E5",
+        tabBarActiveTintColor: "#80A33C",
         tabBarInactiveTintColor: "#9CA3AF",
         tabBarStyle: {
           height: Platform.OS === "ios" ? 85 : 60,
@@ -32,10 +32,17 @@ export default function HrTabsLayout() {
         }}
       />
       <Tabs.Screen
-        name="reports"
+        name="chat"
         options={{
-          title: "Reports",
-          tabBarIcon: ({ color, size }) => <Ionicons name="bar-chart" size={size} color={color} />,
+          title: "Chat",
+          tabBarIcon: ({ color, size }) => <Ionicons name="chatbubbles" size={size} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="quicktask"
+        options={{
+          title: "Quick Task",
+          tabBarIcon: ({ color, size }) => <Ionicons name="list" size={size} color={color} />,
         }}
       />
       <Tabs.Screen

@@ -1,6 +1,6 @@
 import { clearTokens, getRefreshToken, saveTokens } from "@/storage/secureStore";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import axiosClient from "../api/axiosClient";
+import axiosClient, { setUnauthorizedCallback } from "../api/axiosClient";
 
 
 type Role = "hr" | "employee";
@@ -27,6 +27,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setUnauthorizedCallback(() => {
+      setUser(null);
+    });
+  }, []);
+
+  useEffect(() => {
     const bootstrap = async () => {
       const refreshToken = await getRefreshToken();
       if (!refreshToken) {
@@ -35,7 +41,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
       try {
         const res = await axiosClient.get("/auth/me");
-        setUser(res.data);
+        if (res.data && res.data.isActive === false) {
+          await clearTokens();
+          setUser(null);
+        } else {
+          setUser(res.data);
+        }
       } catch {
         await clearTokens();
         setUser(null);
@@ -49,6 +60,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const login = async (email: string, password: string) => {
     const res = await axiosClient.post("/auth/login", { email, password });
     const { accessToken, refreshToken, user: loggedInUser } = res.data;
+    if (loggedInUser && loggedInUser.isActive === false) {
+      throw new Error("Your account is deactivated. Please contact support.");
+    }
     await saveTokens(accessToken, refreshToken);
     setUser(loggedInUser);
   };

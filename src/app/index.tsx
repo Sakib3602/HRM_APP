@@ -10,7 +10,7 @@ export default function Index() {
 
   if (isLoading) return <LoadingScreen />;
 
-  if (!user) return <Redirect href="/(auth)/login" />;
+  if (!user || user.isActive === false) return <Redirect href="/(auth)/login" />;
   if (user.role === "hr") return <Redirect href="/(hr)/(tabs)/dashboard" />;
   return <Redirect href="/(employee)/dashboard" />;
 }

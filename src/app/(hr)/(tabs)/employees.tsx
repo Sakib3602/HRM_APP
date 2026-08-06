@@ -1,42 +1,25 @@
 import axiosClient from "@/api/axiosClient";
-
 import { Ionicons } from "@expo/vector-icons";
-
 import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-
 import { useEffect, useMemo, useState } from "react";
-
 import { Controller, useForm } from "react-hook-form";
-
 import {
     ActivityIndicator,
-
     Alert,
-
     FlatList,
-
     KeyboardAvoidingView,
-
     Modal,
-
     Platform,
-
     Pressable,
-
     RefreshControl,
-
     StatusBar,
-
     Text,
-
     TextInput,
-
     TouchableOpacity,
-
     View,
 } from "react-native";
-
 import { SafeAreaView } from "react-native-safe-area-context";
+
 interface UserFormValues {
   name: string;
   email: string;
@@ -64,14 +47,14 @@ interface UsersResponse {
 }
 
 const LIMIT = 15;
-const SKY = {
-  50: "#f0f9ff",
-  100: "#e0f2fe",
-  200: "#bae6fd",
-  400: "#38bdf8",
-  500: "#0ea5e9",
-  600: "#0284c7",
-  700: "#0369a1",
+const BRAND = {
+  50: "#f4f7ec",
+  100: "#e6edd3",
+  200: "#c8d9a3",
+  400: "#9dbd5e",
+  500: "#80A33C",
+  600: "#698532",
+  700: "#4f6626",
 };
 
 export default function Employees() {
@@ -153,16 +136,13 @@ export default function Employees() {
   const onSubmit = (formData: UserFormValues) => createMutation.mutate(formData);
 
   return (
+    <SafeAreaView className="flex-1" style={{ backgroundColor: BRAND[50] }} edges={["top"]}>
+      <StatusBar barStyle="dark-content" backgroundColor={BRAND[50]} />
 
-    <SafeAreaView className="flex-1" style={{ backgroundColor: SKY[50] }} edges={["top"]}>
-        <StatusBar
-  barStyle="dark-content"
-  backgroundColor="#EAF5FF"
-/>
       {/* Header */}
       <View className="px-5 pt-2 pb-4">
-        <Text className="text-2xl font-bold" style={{ color: SKY[700] }}>
-          Employees
+        <Text className="text-2xl font-bold" style={{ color: BRAND[700] }}>
+          Manage Employees
         </Text>
         <Text className="text-sm text-gray-500 mt-0.5">{total} total office users</Text>
       </View>
@@ -171,9 +151,9 @@ export default function Employees() {
       <View className="px-5 mb-3">
         <View
           className="flex-row items-center bg-white rounded-2xl px-3.5 border"
-          style={{ borderColor: SKY[100] }}
+          style={{ borderColor: BRAND[100] }}
         >
-          <Ionicons name="search" size={17} color={SKY[400]} />
+          <Ionicons name="search" size={17} color={BRAND[400]} />
           <TextInput
             value={searchInput}
             onChangeText={setSearchInput}
@@ -192,9 +172,9 @@ export default function Employees() {
             onPress={() => setStatus(s)}
             className="px-4 py-1.5 rounded-full"
             style={{
-              backgroundColor: status === s ? SKY[500] : "#fff",
+              backgroundColor: status === s ? BRAND[500] : "#fff",
               borderWidth: 1,
-              borderColor: status === s ? SKY[500] : SKY[100],
+              borderColor: status === s ? BRAND[500] : BRAND[100],
             }}
           >
             <Text
@@ -210,7 +190,7 @@ export default function Employees() {
       {/* List */}
       {isLoading ? (
         <View className="flex-1 justify-center items-center">
-          <ActivityIndicator color={SKY[500]} />
+          <ActivityIndicator color={BRAND[500]} />
         </View>
       ) : (
         <FlatList
@@ -218,25 +198,25 @@ export default function Employees() {
           keyExtractor={(item) => item._id}
           contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 100 }}
           refreshControl={
-            <RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor={SKY[500]} />
+            <RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor={BRAND[500]} />
           }
           onEndReachedThreshold={0.4}
           onEndReached={() => hasNextPage && fetchNextPage()}
           ListEmptyComponent={
             <View className="items-center py-16">
-              <Ionicons name="people-outline" size={36} color={SKY[200]} />
+              <Ionicons name="people-outline" size={36} color={BRAND[200]} />
               <Text className="text-gray-400 text-sm mt-2">No users found</Text>
             </View>
           }
           ListFooterComponent={
             isFetchingNextPage ? (
-              <ActivityIndicator color={SKY[500]} style={{ marginVertical: 12 }} />
+              <ActivityIndicator color={BRAND[500]} style={{ marginVertical: 12 }} />
             ) : null
           }
           renderItem={({ item }) => (
             <View
               className="bg-white rounded-2xl p-4 mb-3 border"
-              style={{ borderColor: SKY[100] }}
+              style={{ borderColor: BRAND[100] }}
             >
               <View className="flex-row justify-between items-start">
                 <View className="flex-1 pr-2">
@@ -245,11 +225,11 @@ export default function Employees() {
                 </View>
                 <View
                   className="px-2.5 py-1 rounded-full"
-                  style={{ backgroundColor: item.role === "hr" ? SKY[100] : "#ECFDF5" }}
+                  style={{ backgroundColor: item.role === "hr" ? BRAND[100] : "#ECFDF5" }}
                 >
                   <Text
                     className="text-[10px] font-bold"
-                    style={{ color: item.role === "hr" ? SKY[700] : "#047857" }}
+                    style={{ color: item.role === "hr" ? BRAND[700] : "#047857" }}
                   >
                     {item.role === "hr" ? "HR ADMIN" : "EMPLOYEE"}
                   </Text>
@@ -262,7 +242,7 @@ export default function Employees() {
                 {item.manager && <InfoRow icon="person-outline" label={item.manager} />}
               </View>
 
-              <View className="flex-row items-center justify-between mt-3 pt-3 border-t" style={{ borderColor: SKY[50] }}>
+              <View className="flex-row items-center justify-between mt-3 pt-3 border-t" style={{ borderColor: BRAND[50] }}>
                 <View
                   className="px-2.5 py-1 rounded-full"
                   style={{ backgroundColor: item.isActive ? "#ECFDF5" : "#FEF2F2" }}
@@ -298,7 +278,7 @@ export default function Employees() {
       <TouchableOpacity
         onPress={() => setModalOpen(true)}
         className="absolute bottom-6 right-6 w-14 h-14 rounded-full justify-center items-center shadow-lg"
-        style={{ backgroundColor: SKY[500] }}
+        style={{ backgroundColor: BRAND[500] }}
         activeOpacity={0.85}
       >
         <Ionicons name="add" size={28} color="#fff" />
@@ -312,7 +292,7 @@ export default function Employees() {
             className="bg-white rounded-t-3xl max-h-[88%]"
           >
             <View className="flex-row justify-between items-center px-5 pt-5 pb-3">
-              <Text className="text-lg font-bold" style={{ color: SKY[700] }}>
+              <Text className="text-lg font-bold" style={{ color: BRAND[700] }}>
                 Add office user
               </Text>
               <TouchableOpacity onPress={() => setModalOpen(false)}>
@@ -366,7 +346,7 @@ export default function Employees() {
                           placeholder="Set a login password"
                           placeholderTextColor="#9CA3AF"
                           className="bg-gray-50 border rounded-xl pl-4 pr-11 py-3 text-sm text-gray-800"
-                          style={{ borderColor: SKY[100] }}
+                          style={{ borderColor: BRAND[100] }}
                         />
                       )}
                     />
@@ -394,7 +374,7 @@ export default function Employees() {
                     onPress={handleSubmit(onSubmit)}
                     disabled={createMutation.isPending}
                     className="rounded-xl py-3.5 items-center mt-2"
-                    style={{ backgroundColor: SKY[500], opacity: createMutation.isPending ? 0.7 : 1 }}
+                    style={{ backgroundColor: BRAND[500], opacity: createMutation.isPending ? 0.7 : 1 }}
                   >
                     {createMutation.isPending ? (
                       <ActivityIndicator color="#fff" />
@@ -456,7 +436,7 @@ function FormField({
             keyboardType={keyboardType}
             autoCapitalize={autoCapitalize}
             className="bg-gray-50 border rounded-xl px-4 py-3 text-sm text-gray-800"
-            style={{ borderColor: SKY[100] }}
+            style={{ borderColor: BRAND[100] }}
           />
         )}
       />

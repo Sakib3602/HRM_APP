@@ -8,7 +8,12 @@ console.log("BASE_URL is:", process.env.EXPO_PUBLIC_BASE_URL);
 
 const axiosClient = axios.create({ baseURL: BASE_URL });
 
+let unauthorizedCallback: (() => void) | null = null;
 let refreshPromise: Promise<string> | null = null;
+
+export const setUnauthorizedCallback = (callback: () => void) => {
+  unauthorizedCallback = callback;
+};
 
 const refreshAccessToken = async (): Promise<string> => {
   if (!refreshPromise) {
@@ -36,10 +41,17 @@ axiosClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
+    
+    // Do not attempt token refresh for authentication requests (login, logout, refresh)
+    const isAuthRequest = 
+      originalRequest.url?.includes("/auth/login") || 
+      originalRequest.url?.includes("/auth/logout") || 
+      originalRequest.url?.includes("/auth/refresh");
+
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
-      !originalRequest.url?.includes("/auth/refresh")
+      !isAuthRequest
     ) {
       originalRequest._retry = true;
       try {
@@ -48,6 +60,7 @@ axiosClient.interceptors.response.use(
         return axiosClient(originalRequest);
       } catch (refreshError) {
         await clearTokens();
+        if (unauthorizedCallback) unauthorizedCallback();
         return Promise.reject(refreshError);
       }
     }
