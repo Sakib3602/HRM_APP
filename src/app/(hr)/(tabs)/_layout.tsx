@@ -54,7 +54,11 @@ export default function HrTabsLayout() {
         />
         <Tabs.Screen
         name="HrDocument/hrDocument"
-        options={{ href: null }}   // 👈 tab bar theke hide, kintu route thakbe
+        options={{ href: null }}  
+      />
+        <Tabs.Screen
+        name="HrMeetingsAndAnnounc/hrMeetingsAndAnnounc"
+        options={{ href: null }}  
       />
       
     </Tabs>

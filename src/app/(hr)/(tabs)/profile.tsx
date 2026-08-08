@@ -64,7 +64,7 @@ const router = useRouter();
           icon: "📅",
           label: "Meetings & Announcements",
           subtitle: "Schedule & broadcast",
-          onPress: () => {},
+          onPress: () => {router.push("/HrMeetingsAndAnnounc/hrMeetingsAndAnnounc");},
         },
         {
           icon: "📈",
