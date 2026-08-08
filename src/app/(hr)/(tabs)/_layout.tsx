@@ -51,7 +51,12 @@ export default function HrTabsLayout() {
           title: "Profile",
           tabBarIcon: ({ color, size }) => <Ionicons name="person" size={size} color={color} />,
         }}
+        />
+        <Tabs.Screen
+        name="HrDocument/hrDocument"
+        options={{ href: null }}   // 👈 tab bar theke hide, kintu route thakbe
       />
+      
     </Tabs>
   );
 }

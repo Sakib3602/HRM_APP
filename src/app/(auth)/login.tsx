@@ -2,18 +2,17 @@ import { useAuth } from "@/context/AuthContext";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import {
-    ActivityIndicator,
-    Keyboard,
-    KeyboardAvoidingView,
-    Platform,
-    Pressable,
-    ScrollView,
-    Text,
-    TextInput,
-    TouchableWithoutFeedback,
-    View,
+  ActivityIndicator,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Login() {
   const { login } = useAuth();
@@ -22,6 +21,8 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [emailFocused, setEmailFocused] = useState(false);
+  const [passwordFocused, setPasswordFocused] = useState(false);
 
   const handleLogin = async () => {
     if (!email.trim() || !password.trim()) {
@@ -40,11 +41,10 @@ export default function Login() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50">
+    <View className="flex-1" style={{ backgroundColor: "#F2F8EC" }}>
       <StatusBar style="dark" />
       <KeyboardAvoidingView
         className="flex-1"
-        // অ্যান্ড্রয়েডে Expo ডিফল্টভাবে কীবোর্ড হ্যান্ডেল করে, তাই শুধু iOS-এর জন্য padding দেওয়া হলো
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
         <ScrollView
@@ -54,88 +54,188 @@ export default function Login() {
         >
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View className="flex-1 justify-center px-6 py-10">
-              
+
+              {/* Decorative top blob */}
+              <View
+                style={{
+                  position: "absolute",
+                  top: -80,
+                  right: -60,
+                  width: 220,
+                  height: 220,
+                  borderRadius: 110,
+                  backgroundColor: "#DCEBD0",
+                  opacity: 0.7,
+                }}
+              />
+              <View
+                style={{
+                  position: "absolute",
+                  top: 40,
+                  left: -70,
+                  width: 140,
+                  height: 140,
+                  borderRadius: 70,
+                  backgroundColor: "#1F3A2E",
+                  opacity: 0.06,
+                }}
+              />
+
               {/* Header Section */}
               <View className="items-center mb-10">
-                <View className="w-16 h-16 rounded-full bg-slate-800 justify-center items-center mb-5 shadow-sm">
-                  <Text className="text-white text-2xl font-bold">HR</Text>
-                </View>
-                <Text className="text-2xl font-bold text-gray-900 text-center">
-                  Welcome to Genesys HRM System
+               
+                <Text
+                  style={{ color: "#16281F" }}
+                  className="text-[26px] font-extrabold text-center leading-8"
+                >
+                  Welcome to{"\n"}Genesys HRM System
                 </Text>
-                <Text className="text-sm text-gray-500 mt-2 text-center">
+                <Text
+                  style={{ color: "#5C6F63" }}
+                  className="text-sm mt-3 text-center"
+                >
                   Login to your account to get started
                 </Text>
               </View>
 
-              {/* Form Section */}
-              <View className="w-full">
+              {/* Form Card */}
+              <View
+                style={{
+                  backgroundColor: "#FFFFFF",
+                  borderRadius: 24,
+                  padding: 22,
+                  shadowColor: "#1F3A2E",
+                  shadowOffset: { width: 0, height: 10 },
+                  shadowOpacity: 0.08,
+                  shadowRadius: 20,
+                  elevation: 4,
+                }}
+              >
                 {error ? (
-                  <View className="bg-red-50 border border-red-200 rounded-xl p-3.5 mb-5">
-                    <Text className="text-red-600 text-sm text-center font-medium">{error}</Text>
+                  <View
+                    style={{
+                      backgroundColor: "#FDECEC",
+                      borderColor: "#F6C4C4",
+                      borderWidth: 1,
+                    }}
+                    className="rounded-xl p-3.5 mb-5"
+                  >
+                    <Text className="text-red-600 text-sm text-center font-medium">
+                      {error}
+                    </Text>
                   </View>
                 ) : null}
 
                 <View className="mb-5">
-                  <Text className="text-sm font-semibold text-gray-700 mb-2">
+                  <Text
+                    style={{ color: "#16281F" }}
+                    className="text-sm font-semibold mb-2"
+                  >
                     Email Address
                   </Text>
                   <TextInput
                     value={email}
                     onChangeText={setEmail}
+                    onFocus={() => setEmailFocused(true)}
+                    onBlur={() => setEmailFocused(false)}
                     placeholder="you@company.com"
-                    placeholderTextColor="#9CA3AF"
+                    placeholderTextColor="#A6B3AC"
                     keyboardType="email-address"
                     autoCapitalize="none"
                     autoCorrect={false}
-                    className="bg-white border border-gray-200 rounded-xl px-4 py-3.5 text-base text-gray-900 focus:border-slate-800"
+                    style={{
+                      backgroundColor: "#F7FAF4",
+                      borderColor: emailFocused ? "#1F3A2E" : "#E4EBDE",
+                      borderWidth: emailFocused ? 1.5 : 1,
+                      color: "#16281F",
+                    }}
+                    className="rounded-xl px-4 py-3.5 text-base"
                   />
                 </View>
 
-                <View className="mb-8">
-                  <Text className="text-sm font-semibold text-gray-700 mb-2">
+                <View className="mb-2">
+                  <Text
+                    style={{ color: "#16281F" }}
+                    className="text-sm font-semibold mb-2"
+                  >
                     Password
                   </Text>
                   <View className="relative justify-center">
                     <TextInput
                       value={password}
                       onChangeText={setPassword}
+                      onFocus={() => setPasswordFocused(true)}
+                      onBlur={() => setPasswordFocused(false)}
                       placeholder="••••••••"
-                      placeholderTextColor="#9CA3AF"
+                      placeholderTextColor="#A6B3AC"
                       secureTextEntry={!showPassword}
                       autoCapitalize="none"
-                      className="bg-white border border-gray-200 rounded-xl pl-4 pr-12 py-3.5 text-base text-gray-900 focus:border-slate-800"
+                      style={{
+                        backgroundColor: "#F7FAF4",
+                        borderColor: passwordFocused ? "#1F3A2E" : "#E4EBDE",
+                        borderWidth: passwordFocused ? 1.5 : 1,
+                        color: "#16281F",
+                      }}
+                      className="rounded-xl pl-4 pr-12 py-3.5 text-base"
                     />
                     <Pressable
                       onPress={() => setShowPassword((v) => !v)}
                       hitSlop={15}
                       className="absolute right-4"
                     >
-                      <Text className="text-lg opacity-80">{showPassword ? "🙈" : "👁️"}</Text>
+                      <Text className="text-lg opacity-80">
+                        {showPassword ? "🙈" : "👁️"}
+                      </Text>
                     </Pressable>
                   </View>
                 </View>
 
+                <Pressable className="self-end mb-6" hitSlop={10}>
+                  <Text
+                    style={{ color: "#3E6B52" }}
+                    className="text-sm font-semibold"
+                  >
+                    Forgot password?
+                  </Text>
+                </Pressable>
+
                 <Pressable
                   onPress={handleLogin}
                   disabled={loading}
-                  android_ripple={{ color: "#334155" }}
-                  className={`bg-slate-800 rounded-xl py-4 items-center justify-center shadow-md ${
-                    loading ? "opacity-70" : "active:opacity-90"
-                  }`}
+                  android_ripple={{ color: "#16281F" }}
+                  style={{
+                    backgroundColor: "#1F3A2E",
+                    shadowColor: "#1F3A2E",
+                    shadowOffset: { width: 0, height: 6 },
+                    shadowOpacity: 0.3,
+                    shadowRadius: 10,
+                    elevation: 5,
+                    opacity: loading ? 0.7 : 1,
+                  }}
+                  className="rounded-xl py-4 items-center justify-center active:opacity-90"
                 >
                   {loading ? (
                     <ActivityIndicator color="#fff" />
                   ) : (
-                    <Text className="text-white text-base font-bold tracking-wide">Login</Text>
+                    <Text className="text-white text-base font-bold tracking-wide">
+                      Login
+                    </Text>
                   )}
                 </Pressable>
               </View>
+
+              {/* Footer */}
+              <Text
+                style={{ color: "#8A988E" }}
+                className="text-xs text-center mt-8"
+              >
+                © {new Date().getFullYear()} Genesys HRM System. All rights reserved.
+              </Text>
 
             </View>
           </TouchableWithoutFeedback>
         </ScrollView>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 }
