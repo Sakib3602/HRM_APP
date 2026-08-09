@@ -34,12 +34,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const bootstrap = async () => {
-      const refreshToken = await getRefreshToken();
-      if (!refreshToken) {
-        setIsLoading(false);
-        return;
-      }
       try {
+        const refreshToken = await getRefreshToken();
+        if (!refreshToken) {
+          setIsLoading(false);
+          return;
+        }
         const res = await axiosClient.get("/auth/me");
         if (res.data && res.data.isActive === false) {
           await clearTokens();
@@ -47,7 +47,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         } else {
           setUser(res.data);
         }
-      } catch {
+      } catch (error) {
+        console.error("Error during authentication bootstrapping:", error);
         await clearTokens();
         setUser(null);
       } finally {

@@ -7,7 +7,7 @@ export default function HrLayout() {
 
   if (isLoading) return null;
   if (!user || user.isActive === false) return <Redirect href="/(auth)/login" />;
-  if (user.role !== "hr") return <Redirect href="/(employee)/dashboard" />;
+  if (user.role !== "hr") return <Redirect href="/(employee)/(tabs)/home" />;
 
   return <Stack screenOptions={{ headerShown: false }} />;
 }

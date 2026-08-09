@@ -8,7 +8,7 @@ export default function AuthLayout() {
   if (isLoading) return null;
   if (user && user.isActive !== false) {
     if (user.role === "hr") return <Redirect href="/(hr)/(tabs)/dashboard" />;
-    if (user.role === "employee") return <Redirect href="/(employee)/dashboard" />;
+    if (user.role === "employee") return <Redirect href="/(employee)/(tabs)/home" />;
   }
 
   return <Stack screenOptions={{ headerShown: false }} />;
