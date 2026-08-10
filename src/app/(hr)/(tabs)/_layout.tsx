@@ -64,6 +64,10 @@ export default function HrTabsLayout() {
         name="HrOfficeActivity/office-activity"
         options={{ href: null }}  
       />
+        <Tabs.Screen
+        name="HrEmployeeRecords/employee-records"
+        options={{ href: null }}  
+      />
       
     </Tabs>
   );

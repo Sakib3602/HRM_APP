@@ -72,6 +72,12 @@ const router = useRouter();
           subtitle: "Company-wide activity chart",
           onPress: () => {router.push("/HrOfficeActivity/office-activity");},
         },
+        {
+          icon: "👔",
+          label: "Employee Records",
+          subtitle: "Company-wide activity chart",
+          onPress: () => {router.push("/HrEmployeeRecords/employee-records");},
+        },
       ],
     },
     {
