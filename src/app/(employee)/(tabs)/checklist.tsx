@@ -248,7 +248,7 @@ export default function Checklist() {
                 No checklists submitted yet
               </Text>
               <Text className="text-sm mt-1 text-center" style={{ color: PALETTE.mutedLight }}>
-                Tap the + button to submit today's{"\n"}safety checklist.
+                Tap the + button to submit today&apos;s{"\n"}safety checklist.
               </Text>
             </View>
           }

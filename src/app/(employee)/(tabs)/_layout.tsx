@@ -77,6 +77,23 @@ export default function EmployeeTabsLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+      name="JobReport/JobReport"
+      options={{ href: null }}  
+      />
+      <Tabs.Screen
+      name="leaveReport/LeaveReport"
+      options={{ href: null }}  
+      />
+      <Tabs.Screen
+      name="incidentReport/IncidentReport"
+      options={{ href: null }}  
+      />
+      <Tabs.Screen
+      name="DailyLog/DailyLog"
+      options={{ href: null }}  
+      />
+
     </Tabs>
   );
 }

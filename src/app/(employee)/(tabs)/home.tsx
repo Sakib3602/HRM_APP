@@ -2,6 +2,7 @@
 import { useAuth } from "@/context/AuthContext";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { useRouter } from "expo-router";
 import { useCallback, useState } from "react";
 import {
   Dimensions,
@@ -36,6 +37,7 @@ const PALETTE = {
   roseLight: "#FDECEF",
 };
 
+// এখানে route প্রপার্টি যোগ করা হয়েছে
 const menuItems: {
   key: string;
   label: string;
@@ -43,11 +45,12 @@ const menuItems: {
   icon: keyof typeof Ionicons.glyphMap;
   bg: string;
   tint: string;
+  route: string; 
 }[] = [
-  { key: "clock_in_out", label: "Daily Log", sub: "Clock In/Out", icon: "time-outline", bg: PALETTE.blueLight, tint: PALETTE.blue },
-  { key: "job_report", label: "Submit new", sub: "Job Report", icon: "document-text-outline", bg: PALETTE.mintLight, tint: "#0E9F76" },
-  { key: "incident_report", label: "Report issue", sub: "Incident Report", icon: "warning-outline", bg: PALETTE.amberLight, tint: PALETTE.amber },
-  { key: "leave_report", label: "Leave Request", sub: "History", icon: "calendar-outline", bg: PALETTE.purpleLight, tint: PALETTE.purple },
+  { key: "clock_in_out", label: "Clock In/Out", sub: "Daily log", icon: "time-outline", bg: PALETTE.blueLight, tint: PALETTE.blue, route: "/DailyLog/DailyLog" },
+  { key: "job_report", label: "Job Report", sub: "Submit new", icon: "document-text-outline", bg: PALETTE.mintLight, tint: "#0E9F76", route: "/JobReport/JobReport" },
+  { key: "incident_report", label: "Incident Report", sub: "Report issue", icon: "warning-outline", bg: PALETTE.amberLight, tint: PALETTE.amber, route: "/incidentReport/IncidentReport" },
+  { key: "leave_report", label: "Leave Report", sub: "History", icon: "calendar-outline", bg: PALETTE.purpleLight, tint: PALETTE.purple, route: "/leaveReport/LeaveReport" },
 ];
 
 const weekStats = [
@@ -63,6 +66,7 @@ const colleaguesOnLeave = [
 
 export default function EmployeeHome() {
   const { user } = useAuth();
+  const router = useRouter();
   const [refreshing, setRefreshing] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -81,7 +85,11 @@ export default function EmployeeHome() {
   const hour = new Date().getHours();
   const greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
 
-  const handlePress = (key: string) => console.log(`${key} pressed`);
+  // onPress ফাংশন আপডেট করা হলো
+  const handlePress = (route: string) => {
+    console.log(`Navigating to ${route}`);
+    router.push(route as any);
+  };
 
   const handleCarouselScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const x = e.nativeEvent.contentOffset.x;
@@ -255,11 +263,10 @@ export default function EmployeeHome() {
             {menuItems.map((item) => (
               <TouchableOpacity
                 key={item.key}
-                onPress={() => handlePress(item.key)}
+                onPress={() => handlePress(item.route)} // <-- এখানে route পাস করা হয়েছে
                 activeOpacity={0.85}
                 style={{
                   width: CARD_WIDTH,
-               
                   backgroundColor: "#fff",
                   padding: 14,
                   flexDirection: "row",
