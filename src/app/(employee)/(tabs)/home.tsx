@@ -44,10 +44,10 @@ const menuItems: {
   bg: string;
   tint: string;
 }[] = [
-  { key: "task", label: "My Task", sub: "34 new", icon: "checkbox-outline", bg: PALETTE.blueLight, tint: PALETTE.blue },
-  { key: "ticket", label: "My Ticket", sub: "12 open", icon: "pricetags-outline", bg: PALETTE.mintLight, tint: "#0E9F76" },
-  { key: "report", label: "Report", sub: "View all", icon: "bar-chart-outline", bg: PALETTE.amberLight, tint: PALETTE.amber },
-  { key: "profile", label: "Profile", sub: "Details", icon: "person-outline", bg: PALETTE.purpleLight, tint: PALETTE.purple },
+  { key: "clock_in_out", label: "Daily Log", sub: "Clock In/Out", icon: "time-outline", bg: PALETTE.blueLight, tint: PALETTE.blue },
+  { key: "job_report", label: "Submit new", sub: "Job Report", icon: "document-text-outline", bg: PALETTE.mintLight, tint: "#0E9F76" },
+  { key: "incident_report", label: "Report issue", sub: "Incident Report", icon: "warning-outline", bg: PALETTE.amberLight, tint: PALETTE.amber },
+  { key: "leave_report", label: "Leave Request", sub: "History", icon: "calendar-outline", bg: PALETTE.purpleLight, tint: PALETTE.purple },
 ];
 
 const weekStats = [
