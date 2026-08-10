@@ -90,6 +90,12 @@ const router = useRouter();
           onPress: () => {},
         },
         {
+          icon: "🧾",
+          label: "Report & Feedback",
+          subtitle: "Give feedback About Software",
+          onPress: () => {},
+        },
+        {
           icon: "🚪",
           label: "Log out",
           onPress: confirmLogout,

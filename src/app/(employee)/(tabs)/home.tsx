@@ -4,15 +4,15 @@ import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useCallback, useState } from "react";
 import {
-    Dimensions,
-    NativeScrollEvent,
-    NativeSyntheticEvent,
-    RefreshControl,
-    ScrollView,
-    StatusBar,
-    Text,
-    TouchableOpacity,
-    View,
+  Dimensions,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  RefreshControl,
+  ScrollView,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -259,7 +259,7 @@ export default function EmployeeHome() {
                 activeOpacity={0.85}
                 style={{
                   width: CARD_WIDTH,
-                  borderRadius: 16,
+               
                   backgroundColor: "#fff",
                   padding: 14,
                   flexDirection: "row",
