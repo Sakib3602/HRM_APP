@@ -70,7 +70,7 @@ const router = useRouter();
           icon: "📈",
           label: "Office Activity Analytics",
           subtitle: "Company-wide activity chart",
-          onPress: () => {},
+          onPress: () => {router.push("/HrOfficeActivity/office-activity");},
         },
       ],
     },
