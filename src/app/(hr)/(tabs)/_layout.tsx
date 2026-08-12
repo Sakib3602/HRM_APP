@@ -68,6 +68,10 @@ export default function HrTabsLayout() {
         name="HrEmployeeRecords/employee-records"
         options={{ href: null }}  
       />
+        <Tabs.Screen
+        name="chat/[chatId]"
+        options={{ href: null }}  
+      />
       
     </Tabs>
   );

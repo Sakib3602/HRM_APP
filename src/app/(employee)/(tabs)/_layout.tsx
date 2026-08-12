@@ -93,6 +93,10 @@ export default function EmployeeTabsLayout() {
       name="DailyLog/DailyLog"
       options={{ href: null }}  
       />
+      <Tabs.Screen
+      name="chat/[chatId]"
+      options={{ href: null }}  
+      />
 
     </Tabs>
   );

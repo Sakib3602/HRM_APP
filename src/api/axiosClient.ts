@@ -1,18 +1,16 @@
 import { clearTokens, getAccessToken, getRefreshToken, saveTokens } from "@/storage/secureStore";
 import axios from "axios";
 
-
 const BASE_URL = process.env.EXPO_PUBLIC_BASE_URL;
 
-console.log("BASE_URL is:", process.env.EXPO_PUBLIC_BASE_URL);
-
+// eslint-disable-next-line import/no-named-as-default-member
 const axiosClient = axios.create({ baseURL: BASE_URL });
 
-let unauthorizedCallback: (() => void) | null = null;
 let refreshPromise: Promise<string> | null = null;
+let onUnauthorized: (() => void) | null = null;
 
 export const setUnauthorizedCallback = (callback: () => void) => {
-  unauthorizedCallback = callback;
+  onUnauthorized = callback;
 };
 
 const refreshAccessToken = async (): Promise<string> => {
@@ -41,17 +39,10 @@ axiosClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    
-    // Do not attempt token refresh for authentication requests (login, logout, refresh)
-    const isAuthRequest = 
-      originalRequest.url?.includes("/auth/login") || 
-      originalRequest.url?.includes("/auth/logout") || 
-      originalRequest.url?.includes("/auth/refresh");
-
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
-      !isAuthRequest
+      !originalRequest.url?.includes("/auth/refresh")
     ) {
       originalRequest._retry = true;
       try {
@@ -60,7 +51,7 @@ axiosClient.interceptors.response.use(
         return axiosClient(originalRequest);
       } catch (refreshError) {
         await clearTokens();
-        if (unauthorizedCallback) unauthorizedCallback();
+        onUnauthorized?.();
         return Promise.reject(refreshError);
       }
     }

@@ -1,7 +1,8 @@
+import { connectSocket, disconnectSocket, getSocket } from "@/api/socket";
 import { clearTokens, getRefreshToken, saveTokens } from "@/storage/secureStore";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useRef, useState } from "react";
+import { AppState, AppStateStatus } from "react-native";
 import axiosClient, { setUnauthorizedCallback } from "../api/axiosClient";
-
 
 type Role = "hr" | "employee";
 
@@ -25,12 +26,33 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const appState = useRef(AppState.currentState);
 
   useEffect(() => {
     setUnauthorizedCallback(() => {
       setUser(null);
+      disconnectSocket();
     });
   }, []);
+
+  // App background theke foreground e ashle socket reconnect koro
+  useEffect(() => {
+    const subscription = AppState.addEventListener("change", (nextAppState: AppStateStatus) => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === "active" &&
+        user
+      ) {
+        const socket = getSocket();
+        if (!socket.connected) {
+          connectSocket();
+        }
+      }
+      appState.current = nextAppState;
+    });
+
+    return () => subscription.remove();
+  }, [user]);
 
   useEffect(() => {
     const bootstrap = async () => {
@@ -46,6 +68,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           setUser(null);
         } else {
           setUser(res.data);
+          await connectSocket();
         }
       } catch (error) {
         console.error("Error during authentication bootstrapping:", error);
@@ -66,12 +89,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
     await saveTokens(accessToken, refreshToken);
     setUser(loggedInUser);
+    await connectSocket();
   };
 
   const logout = async () => {
     try {
       await axiosClient.post("/auth/logout");
     } catch {}
+    disconnectSocket();
     await clearTokens();
     setUser(null);
   };
